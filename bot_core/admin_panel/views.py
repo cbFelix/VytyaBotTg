@@ -3,16 +3,40 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("Idi nahui suka")
+    return render(
+        request,
+        'bot/index.html',
+        {
+
+        },
+    )
 
 
 def users(request):
-    return HttpResponse("Users")
+    return render(
+        request,
+        'bot/users.html',
+        {
+
+        },
+    )
 
 
 def bot_menu(request):
-    return HttpResponse("Bot menu")
+    return render(
+        request,
+        'bot/bot_menu.html',
+        {
+
+        },
+    )
 
 
 def cli_menu(request):
-    return HttpResponse("Cli")
+    return render(
+        request,
+        'bot/cli_menu.html',
+        {
+
+        },
+    )
