@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bot Management</title>
+    <title>Bot Dashboard</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <header>
@@ -12,19 +12,14 @@
         <a href="{% url 'bot_menu' %}">Bot Management</a>
     </header>
     <div class="container">
-        <h1>Bot Management</h1>
-        <form method="post" action="{% url 'bot_configure' %}">
-            {% csrf_token %}
-            <h2>Bot Configuration</h2>
-            <label for="token">Bot Token:</label>
-            <input type="text" id="token" name="token" value="{{ bot_token }}">
-            <button type="submit">Update Token</button>
-        </form>
-        <h2>Bot Actions</h2>
+        <h1>Bot Dashboard</h1>
+        <p>Welcome to the bot dashboard. Here you can manage your bot and view statistics.</p>
         <p>Bot status: <span id="bot-status">{{ bot_status }}</span></p>
         <button onclick="startBot()">Start Bot</button>
         <button onclick="stopBot()">Stop Bot</button>
         <button onclick="restartBot()">Restart Bot</button>
+        <h2>Online Telegram Users</h2>
+        <p>Display a list of users who are currently online.</p>
     </div>
     <footer>
         <p>&copy; 2024 Bot Management by Just L</p>
