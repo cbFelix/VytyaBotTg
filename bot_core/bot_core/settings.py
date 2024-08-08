@@ -121,5 +121,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Bot
 
-TELEGRAM_API_TOKEN = ''
+TELEGRAM_API_TOKEN = '7296517902:AAFa_AxzEREnIqEvP-sn4Uk6h7cMqi2z5yQ'
 
