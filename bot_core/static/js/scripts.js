@@ -50,3 +50,26 @@ function restartBot() {
             alert('Failed to restart bot: ' + error.message);
         });
 }
+
+document.getElementById('bot-config-form').addEventListener('submit', function(event) {
+
+    const token = document.getElementById('token').value;
+    const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+    fetch('/bot/update-token/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({ token: token })
+    })
+    .then(handleResponse)
+    .then(data => {
+        alert('Token updated successfully');
+        updateBotStatus();
+    })
+    .catch(error => {
+        alert('Failed to update token: ' + error.message);
+    });
+});

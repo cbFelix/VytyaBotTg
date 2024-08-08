@@ -13,7 +13,7 @@
     </header>
     <div class="container">
         <h1>Bot Management</h1>
-        <form method="post" action="{% url 'bot_configure' %}">
+        <form id="bot-config-form">
             {% csrf_token %}
             <h2>Bot Configuration</h2>
             <label for="token">Bot Token:</label>

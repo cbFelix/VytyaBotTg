@@ -10,4 +10,5 @@ urlpatterns = [
     path('stop-bot/', views.stop_bot_view, name='stop-bot'),
     path('restart-bot/', views.restart_bot_view, name='restart-bot'),
     path('status/', views.bot_status_view, name='bot-status'),
+    path('bot-configure/', views.bot_configure, name='bot_configure'),
 ]

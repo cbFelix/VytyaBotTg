@@ -8,8 +8,6 @@ from admin_panel.models import TgUser, UserMessage
 from .bot_manager import start_bot, stop_bot, load_state
 
 
-
-
 def bot_menu(request):
     bot_status = "running" if load_state() else "stopped"
     return render(request, 'bot/bot_menu.html', {'bot_status': bot_status})
