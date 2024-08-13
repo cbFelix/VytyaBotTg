@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Topic</title>
+</head>
+<body>
+    <h1>{% if topic %}Edit Topic{% else %}Add New Topic{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="name">Topic Name:</label>
+        <input type="text" id="name" name="name" value="{{ topic.name|default_if_none:'' }}" required>
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'topic_list' %}">Back to Topics</a>
+</body>
+</html>

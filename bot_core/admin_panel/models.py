@@ -23,6 +23,16 @@ class UserMessage(models.Model):
     date_received = models.DateTimeField(auto_now_add=True)
 
 
+class Topic(models.Model):
+    name = models.CharField(max_length=200, unique=True)
 
+    def __str__(self):
+        return self.name
 
+class Question(models.Model):
+    topic = models.ForeignKey(Topic, related_name='questions', on_delete=models.CASCADE)
+    question_text = models.TextField()
+    answer_text = models.TextField()
 
+    def __str__(self):
+        return self.question_text

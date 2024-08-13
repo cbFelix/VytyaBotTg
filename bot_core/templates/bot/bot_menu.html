@@ -1,34 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bot Management</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>Bot Menu</title>
 </head>
 <body>
-    <header>
-        <a href="{% url 'index' %}">Home</a>
-        <a href="{% url 'users' %}">Users</a>
-        <a href="{% url 'bot_menu' %}">Bot Management</a>
-    </header>
-    <div class="container">
-        <h1>Bot Management</h1>
-        <form id="bot-config-form">
-            {% csrf_token %}
-            <h2>Bot Configuration</h2>
-            <label for="token">Bot Token:</label>
-            <input type="text" id="token" name="token" value="{{ bot_token }}">
-            <button type="submit">Update Token</button>
-        </form>
-        <h2>Bot Actions</h2>
-        <p>Bot status: <span id="bot-status">{{ bot_status }}</span></p>
-        <button onclick="startBot()">Start Bot</button>
-        <button onclick="stopBot()">Stop Bot</button>
-        <button onclick="restartBot()">Restart Bot</button>
-    </div>
-    <footer>
-        <p>&copy; 2024 Bot Management by Just L</p>
-    </footer>
-    <script src="{% static 'js/scripts.js' %}"></script>
+    <h1>Bot Menu</h1>
+    <p>Status: {{ bot_status }}</p>
+    <a href="{% url 'topic_list' %}">Manage Topics and Questions</a>
 </body>
 </html>

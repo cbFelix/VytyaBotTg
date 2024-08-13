@@ -1,17 +1,15 @@
-from django.db.models import Q
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.http import require_POST, require_GET
-from django.core.management import call_command
-from django.conf import settings
-from admin_panel.models import TgUser, UserMessage
-from .bot_manager import start_bot, stop_bot, load_state
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 
+from bot_core import settings
+from django.db.models import Q
+from .bot_manager import stop_bot, load_state, start_bot
+from .models import TgUser, UserMessage, Topic, Question
+from django.views.decorators.http import require_POST, require_GET
 
 def bot_menu(request):
     bot_status = "running" if load_state() else "stopped"
     return render(request, 'bot/bot_menu.html', {'bot_status': bot_status})
-
 
 def users(request):
     query = request.GET.get('q', '')
@@ -22,12 +20,10 @@ def users(request):
     )
     return render(request, 'bot/users.html', {'users': users})
 
-
 def user(request, user_id):
     user = TgUser.objects.get(pk=user_id)
     messages = UserMessage.objects.filter(user=user)
     return render(request, 'bot/user.html', {'user': user, 'messages': messages})
-
 
 @require_POST
 def bot_configure(request):
@@ -35,7 +31,6 @@ def bot_configure(request):
     if new_token:
         settings.TELEGRAM_API_TOKEN = new_token
     return redirect('bot_menu')
-
 
 @require_GET
 def start_bot_view(request):
@@ -45,7 +40,6 @@ def start_bot_view(request):
     except RuntimeError as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-
 @require_GET
 def stop_bot_view(request):
     try:
@@ -53,7 +47,6 @@ def stop_bot_view(request):
         return JsonResponse({'status': 'stopped'})
     except RuntimeError as e:
         return JsonResponse({'error': str(e)}, status=400)
-
 
 @require_GET
 def restart_bot_view(request):
@@ -64,8 +57,52 @@ def restart_bot_view(request):
     except RuntimeError as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-
 def bot_status_view(request):
     bot_status = "running" if load_state() else "stopped"
     return JsonResponse({'status': bot_status})
 
+def topic_list(request):
+    topics = Topic.objects.all()
+    return render(request, 'bot/topic_list.html', {'topics': topics})
+
+def topic_edit(request, topic_id=None):
+    if topic_id:
+        topic = get_object_or_404(Topic, id=topic_id)
+    else:
+        topic = None
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if topic:
+            topic.name = name
+            topic.save()
+        else:
+            Topic.objects.create(name=name)
+        return redirect('topic_list')
+
+    return render(request, 'bot/topic_edit.html', {'topic': topic})
+
+def question_list(request, topic_id):
+    topic = get_object_or_404(Topic, id=topic_id)
+    questions = topic.questions.all()
+    return render(request, 'bot/question_list.html', {'topic': topic, 'questions': questions})
+
+def question_edit(request, topic_id, question_id=None):
+    topic = get_object_or_404(Topic, id=topic_id)
+    if question_id:
+        question = get_object_or_404(Question, id=question_id)
+    else:
+        question = None
+
+    if request.method == 'POST':
+        question_text = request.POST.get('question_text')
+        answer_text = request.POST.get('answer_text')
+        if question:
+            question.question_text = question_text
+            question.answer_text = answer_text
+            question.save()
+        else:
+            Question.objects.create(topic=topic, question_text=question_text, answer_text=answer_text)
+        return redirect('question_list', topic_id=topic_id)
+
+    return render(request, 'bot/question_edit.html', {'topic': topic, 'question': question})

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Topics</title>
+</head>
+<body>
+    <h1>Topics</h1>
+    <a href="{% url 'topic_edit' %}">Add New Topic</a>
+    <ul>
+        {% for topic in topics %}
+            <li>
+                {{ topic.name }} - <a href="{% url 'question_list' topic.id %}">Manage Questions</a>
+                <a href="{% url 'bot/topics/edit/' topic.id %}">Edit</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
