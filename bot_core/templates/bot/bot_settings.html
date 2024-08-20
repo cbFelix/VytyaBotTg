@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Settings</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Bot Settings</h1>
+
+    <h2>Create New Topic</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="topic_name">Topic Name:</label>
+        <input type="text" id="topic_name" name="topic_name" required>
+        <button type="submit" name="create_topic">Create Topic</button>
+    </form>
+
+    <h2>Topics and Questions</h2>
+    {% for topic in topics %}
+        <h3>{{ topic.name }}</h3>
+        <ul>
+            {% for question in topic.questions.all %}
+                <li><strong>Q:</strong> {{ question.question_text }}<br><strong>A:</strong> {{ question.answer_text }}</li>
+            {% endfor %}
+        </ul>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="topic_id" value="{{ topic.id }}">
+            <label for="question_text_{{ topic.id }}">Question:</label>
+            <input type="text" id="question_text_{{ topic.id }}" name="question_text" required>
+
+            <label for="answer_text_{{ topic.id }}">Answer:</label>
+            <input type="text" id="answer_text_{{ topic.id }}" name="answer_text" required>
+
+            <button type="submit" name="create_question">Add Question</button>
+        </form>
+    {% endfor %}
+</body>
+</html>

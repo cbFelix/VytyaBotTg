@@ -1,5 +1,3 @@
-# urls.py
-
 from django.urls import path
 from . import views
 
@@ -12,9 +10,7 @@ urlpatterns = [
     path('stop-bot/', views.stop_bot_view, name='stop-bot'),
     path('restart-bot/', views.restart_bot_view, name='restart-bot'),
     path('status/', views.bot_status_view, name='bot-status'),
-    path('topics/', views.topic_list, name='topic_list'),
-    path('topics/edit/', views.topic_edit, name='topic_edit'),
-    path('topics/<int:topic_id>/questions/', views.question_list, name='question_list'),
-    path('topics/<int:topic_id>/questions/edit/', views.question_edit, name='question_edit'),
-    path('topics/<int:topic_id>/questions/edit/<int:question_id>/', views.question_edit, name='question_edit'),
+
+    # Маршрут для страницы настроек бота (темы и вопросы)
+    path('settings/', views.bot_settings, name='bot_settings'),
 ]

@@ -61,48 +61,28 @@ def bot_status_view(request):
     bot_status = "running" if load_state() else "stopped"
     return JsonResponse({'status': bot_status})
 
-def topic_list(request):
+def bot_settings(request):
+    # Получение всех тем и вопросов для отображения на странице
     topics = Topic.objects.all()
-    return render(request, 'bot/topic_list.html', {'topics': topics})
-
-def topic_edit(request, topic_id=None):
-    if topic_id:
-        topic = get_object_or_404(Topic, id=topic_id)
-    else:
-        topic = None
 
     if request.method == 'POST':
-        name = request.POST.get('name')
-        if topic:
-            topic.name = name
-            topic.save()
-        else:
-            Topic.objects.create(name=name)
-        return redirect('topic_list')
+        # Обработка создания или обновления темы
+        if 'create_topic' in request.POST:
+            topic_name = request.POST.get('topic_name')
+            if topic_name:
+                Topic.objects.create(name=topic_name)
+            return redirect('bot_settings')
 
-    return render(request, 'bot/topic_edit.html', {'topic': topic})
+        # Обработка создания или обновления вопроса
+        if 'create_question' in request.POST:
+            topic_id = request.POST.get('topic_id')
+            question_text = request.POST.get('question_text')
+            answer_text = request.POST.get('answer_text')
+            if topic_id and question_text and answer_text:
+                topic = get_object_or_404(Topic, id=topic_id)
+                Question.objects.create(topic=topic, question_text=question_text, answer_text=answer_text)
+            return redirect('bot_settings')
 
-def question_list(request, topic_id):
-    topic = get_object_or_404(Topic, id=topic_id)
-    questions = topic.questions.all()
-    return render(request, 'bot/question_list.html', {'topic': topic, 'questions': questions})
+    return render(request, 'bot/bot_settings.html', {'topics': topics})
 
-def question_edit(request, topic_id, question_id=None):
-    topic = get_object_or_404(Topic, id=topic_id)
-    if question_id:
-        question = get_object_or_404(Question, id=question_id)
-    else:
-        question = None
 
-    if request.method == 'POST':
-        question_text = request.POST.get('question_text')
-        answer_text = request.POST.get('answer_text')
-        if question:
-            question.question_text = question_text
-            question.answer_text = answer_text
-            question.save()
-        else:
-            Question.objects.create(topic=topic, question_text=question_text, answer_text=answer_text)
-        return redirect('question_list', topic_id=topic_id)
-
-    return render(request, 'bot/question_edit.html', {'topic': topic, 'question': question})
