@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'admin_panel.apps.AdminPanelConfig',
-    'rest_framework'
+    'rest_framework',
+
 ]
 
 MIDDLEWARE = [
