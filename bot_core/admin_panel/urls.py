@@ -16,6 +16,8 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('register/', views.register_view, name='register'),
 
+    # Request запрос для настройки тем у бота
+
     path('bot_settings/', access_required(3)(views.bot_settings), name='bot_settings'),
     path('create_topic/', access_required(3)(views.create_topic), name='create_topic'),
     path('edit_topic/<int:topic_id>/', access_required(3)(views.edit_topic), name='edit_topic'),

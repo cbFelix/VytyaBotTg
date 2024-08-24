@@ -2,7 +2,7 @@
 html, body {
     height: 100%;
     margin: 0;
-    font-family: 'Miroslav', serif;
+    font-family: 'georgia', serif;
     color: #e0e0e0;
     background-color: #1e1e1e;
     overflow-x: hidden;
@@ -76,6 +76,7 @@ input[type="text"]:focus {
     background-color: #444;
     border-color: #f4a261;
     outline: none;
+    text-shadow: 0 0 6px #f4a261;
 }
 
 /* Стили для кнопок */
@@ -91,6 +92,7 @@ button {
 button:hover {
     background-color: #e0764a;
     transform: translateY(-2px);
+    text-shadow: 0 0 8px #f4a261;
 }
 
 button:active {
@@ -215,4 +217,3 @@ header a:hover, footer a:hover {
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
-

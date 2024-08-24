@@ -12,6 +12,10 @@ from .models import TgUser, UserMessage, Topic, Question
 from .bot_manager import stop_bot, load_state, start_bot
 
 
+def error_404(request, exception):
+    return render(request, '404.html', status=404)
+
+
 def register_view(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -61,7 +65,7 @@ def access_required(level):
         def _wrapped_view(request, *args, **kwargs):
             if request.user.is_authenticated and request.user.access_level >= level:
                 return view_func(request, *args, **kwargs)
-            return HttpResponseForbidden()
+            return render(request, 'access_forbidden.html')
 
         return _wrapped_view
 

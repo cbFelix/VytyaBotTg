@@ -13,21 +13,28 @@ from admin_panel.models import TgUser, UserMessage, Topic
 
 bot = AsyncTeleBot(TELEGRAM_API_TOKEN)
 
+
+async def show_topics(message):
+    topics = await sync_to_async(list)(Topic.objects.all())
+    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+    for topic in topics:
+        markup.add(topic.name)
+    await bot.send_message(message.chat.id, "Выберите тему:", reply_markup=markup)
+
+
 @bot.message_handler(commands=['start'])
 async def send_welcome(message):
     user, created = await sync_to_async(TgUser.objects.get_or_create)(user_id=message.from_user.id)
 
     if user.phone:
-        topics = await sync_to_async(list)(Topic.objects.all())
-        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-        for topic in topics:
-            markup.add(topic.name)
-        await bot.send_message(message.chat.id, "Выберите тему:", reply_markup=markup)
+        await show_topics(message)
     else:
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
         button_phone = types.KeyboardButton(text="Поделиться номером телефона", request_contact=True)
         markup.add(button_phone)
-        await bot.send_message(message.chat.id, "Пожалуйста, поделитесь вашим номером телефона для регистрации.", reply_markup=markup)
+        await bot.send_message(message.chat.id, "Пожалуйста, поделитесь вашим номером телефона для регистрации.",
+                               reply_markup=markup)
+
 
 @bot.message_handler(content_types=['contact'])
 async def contact_handler(message):
@@ -44,7 +51,9 @@ async def contact_handler(message):
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
         for topic in topics:
             markup.add(topic.name)
-        await bot.send_message(message.chat.id, "Спасибо за регистрацию! Теперь выберите интересующую вас тему.", reply_markup=markup)
+        await bot.send_message(message.chat.id, "Спасибо за регистрацию! Теперь выберите интересующую вас тему.",
+                               reply_markup=markup)
+
 
 @bot.message_handler(func=lambda message: True)
 async def handle_message(message):
@@ -70,15 +79,17 @@ async def handle_message(message):
             questions = await sync_to_async(list)(topic.questions.all())
             question_dict = {q.question_text: q.answer_text for q in questions}
             if message.text in question_dict:
-                await bot.send_message(message.chat.id, question_dict[message.text], reply_markup=types.ReplyKeyboardRemove())
+                await bot.send_message(message.chat.id, question_dict[message.text],
+                                       reply_markup=types.ReplyKeyboardRemove())
+
                 return
 
         await bot.send_message(message.chat.id, "Извините, я не нашел ответа на ваш вопрос.")
 
-# Бляяяяяяяяяяяяяя что делать поч ничего не робит
 
 def run_bot():
     asyncio.run(bot.polling())
+
 
 if __name__ == '__main__':
     run_bot()
