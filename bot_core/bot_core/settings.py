@@ -16,6 +16,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
+
+AUTH_USER_MODEL = 'admin_panel.User'
+
 
 # Application definition
 
@@ -26,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'admin_panel.apps.AdminPanelConfig',
+    'admin_panel',
     'rest_framework',
 
 ]

@@ -1,50 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User Details</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <header>
-        <a href="{% url 'index' %}">Home</a>
-        <a href="{% url 'users' %}">Users</a>
-        <a href="{% url 'bot_settings' %}">Edit topics</a>
-    </header>
-    <div class="container">
-        <h1>User Details</h1>
-        <p><strong>Username:</strong> {{ user.username }}</p>
-        <p><strong>First Name:</strong> {{ user.first_name }}</p>
-        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
-        <p><strong>Phone:</strong> {{ user.phone }}</p>
-        <p><strong>User ID:</strong> {{ user.user_id }}</p>
-        <p><strong>Language:</strong> {{ user.language_code }}</p>
-        <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
-        <h2>Messages</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for message in messages %}
-                <tr>
-                    <td>{{ message.date_received }}</td>
-                    <td>{{ message.message_text }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2">No messages found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <footer>
-        <p>&copy; 2024 Bot Management by Just L</p>
-    </footer>
-    <script src="{% static 'js/scripts.js' %}"></script>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}User Details{% endblock %}
+
+{% block content %}
+<h1>User Details</h1>
+<p><strong>Username:</strong> {{ user.username }}</p>
+<p><strong>First Name:</strong> {{ user.first_name }}</p>
+<p><strong>Last Name:</strong> {{ user.last_name }}</p>
+<p><strong>Phone:</strong> {{ user.phone }}</p>
+<p><strong>User ID:</strong> {{ user.user_id }}</p>
+<p><strong>Language:</strong> {{ user.language_code }}</p>
+<p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
+<h2>Messages</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for message in messages %}
+        <tr>
+            <td>{{ message.date_received }}</td>
+            <td>{{ message.message_text }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No messages found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Bot Dashboard</h1>
+<p>Welcome to the bot dashboard. Here you can manage your bot and view statistics.</p>
+<p>Bot status: <span id="bot-status">{{ bot_status }}</span></p>
+<button onclick="startBot()">Start Bot</button>
+<button onclick="stopBot()">Stop Bot</button>
+<button onclick="restartBot()">Restart Bot</button>
+{% endblock %}
