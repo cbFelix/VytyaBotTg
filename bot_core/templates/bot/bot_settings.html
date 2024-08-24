@@ -19,7 +19,6 @@
 {% for topic in topics %}
     <h3>
         {{ topic.name }}
-        <!-- Форма для редактирования названия темы -->
         <form method="POST" action="{% url 'edit_topic' topic.id %}" style="display:inline;">
             {% csrf_token %}
             <input type="hidden" name="topic_id" value="{{ topic.id }}">
@@ -34,7 +33,6 @@
         </form>
     </h3>
 
-    <!-- Список вопросов и ответов с возможностью редактирования и удаления -->
     <ul>
         {% for question in topic.questions.all %}
             <li>
